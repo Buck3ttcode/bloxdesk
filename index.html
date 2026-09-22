@@ -119,7 +119,7 @@
           When a banned player submits an appeal in your server's <code>#appeal_channel</code>, the triage engine evaluates their written statement directly against the recorded physics evidence and provides staff with a clear verdict:
         </p>
         <ul>
-          <li><strong>Confirmed Violation:</strong> The telemetry mathematically disproves the player's claim (e.g. sustained 142 studs/s horizontal movement with 0% packet loss).</li>
+          <li><strong>Confirmed Violation:</strong> Telemetry provides strong empirical evidence contradicting the appeal claim (e.g. sustained 142 studs/s horizontal movement with 0% packet loss).</li>
           <li><strong>Innocent Glitch / False Ban:</strong> The telemetry confirms high-impulse explosion flings, vehicle glitches, or sudden server desync.</li>
           <li><strong>Manual Staff Review:</strong> Edge cases where telemetry is absent or ambiguous, presented to staff with 1-click Approve and Deny buttons.</li>
         </ul>
@@ -210,9 +210,9 @@
         </ol>
 
         <div class="admonition warning">
-          <div class="admonition-title">HTTP Requests Required</div>
+          <div class="admonition-title">Network Security & Encryption (TLS/HTTPS)</div>
           <p>
-            BloxDesk requires <code>HttpService.HttpEnabled = true</code> to transmit incident telemetry and verify server configurations.
+            While Roblox Studio labels the permission <strong>"Allow HTTP Requests"</strong> (under <code>HttpService.HttpEnabled</code>), all communication between your game servers and BloxDesk backend infrastructure is strictly enforced over <strong>encrypted TLS/HTTPS (Port 443)</strong>. Plaintext HTTP requests are rejected at the edge gateway.
           </p>
         </div>
       </section>
@@ -375,7 +375,7 @@ BloxDesk.ReportIncident(player, "CombatMismatch", {
           <tbody>
             <tr>
               <td><strong>Confirmed Violation</strong></td>
-              <td>Telemetry mathematically proves active exploiting, prompt injection, or cheat recidivism.</td>
+              <td>Telemetry provides strong empirical evidence contradicting the appeal claim (e.g. sustained anomalous velocity, unflagged teleportation, or cheat recidivism).</td>
               <td><code>Deny Appeal & Maintain Ban</code></td>
             </tr>
             <tr>
@@ -390,6 +390,18 @@ BloxDesk.ReportIncident(player, "CombatMismatch", {
             </tr>
           </tbody>
         </table>
+
+        <div class="admonition note" style="margin-top: 24px;">
+          <div class="admonition-title">Deterministic Policy & Human-in-the-Loop Architecture</div>
+          <p>
+            BloxDesk treats Generative AI (Google Gemini 3.6 Flash) strictly as an <strong>advisory copilot</strong>, not an autonomous ban authority:
+          </p>
+          <ul style="margin: 8px 0 0 18px; font-size: 14px; line-height: 1.6;">
+            <li><strong>Staff Adjudication by Default:</strong> Appeals and AI recommendations are dispatched into private <code>#moderation</code> review queues with 1-click <code>Approve Appeal</code> and <code>Deny Appeal</code> action buttons. All final moderation actions remain under human staff control.</li>
+            <li><strong>Zero Direct AI Ban Issuance:</strong> Large language models are never granted direct write access to Roblox Open Cloud ban endpoints. They only produce structured advisory triage evaluations for staff.</li>
+            <li><strong>Automated Circuit Breaker:</strong> For games utilizing PRO+ autonomous AutoMod, an immutable deterministic circuit breaker trips and freezes all automated bans if more than <strong>5 bans trigger within a rolling 10-minute window</strong>. This guarantees protection against cascading false positives in the event of game updates or engine physics glitches.</li>
+          </ul>
+        </div>
       </section>
 
       <!-- Performance Benchmarks -->
@@ -459,6 +471,19 @@ BloxDesk.ReportIncident(player, "CombatMismatch", {
             </tr>
           </tbody>
         </table>
+
+        <div class="admonition tip" style="margin-top: 24px;">
+          <div class="admonition-title">Test Methodology & Reproducibility</div>
+          <p>
+            Benchmarks are measured using an automated synthetic stress test suite simulating high-concurrency studio scale:
+          </p>
+          <ul style="margin: 8px 0 0 18px; font-size: 14px; line-height: 1.6;">
+            <li><strong>Dataset Scale:</strong> 10,000 incident telemetry vectors across multiple universes, 3,000 cross-game Open Cloud ban records, and 1,500 structured player appeal cases.</li>
+            <li><strong>Storage Engine:</strong> Embedded SQLite configured with Write-Ahead Logging (<code>PRAGMA journal_mode = WAL</code>), synchronous normal, and memory-mapped I/O running on high-IOPS NVMe SSD storage.</li>
+            <li><strong>Hostile Attack Matrices:</strong> Evaluated against 15 hostile SSRF evasion vectors (AWS/GCP metadata endpoints <code>169.254.169.254</code>, IPv6 loopbacks, link-local addresses, private RFC-1918 subnets, and DNS rebinding simulations) and 6 SQL injection payloads targeting input sanitization.</li>
+            <li><strong>In-Engine Client Profiling:</strong> 4Hz passive Luau heartbeat monitoring profiled in live 60 FPS Roblox Studio environments, utilizing &lt; 0.05% CPU with 0 dropped frames or physics simulation hitches.</li>
+          </ul>
+        </div>
       </section>
 
       <!-- Plans & Pricing -->
