@@ -55,7 +55,7 @@ type PlayerState = {
 
 -- Default Configuration
 local config: BloxDeskConfig = {
-	WebhookUrl = "http://127.0.0.1:3000/api/incident",
+	WebhookUrl = "https://bloxdesk-bot-production.up.railway.app/api/incident",
 	ApiSecret = "change_this_secret",
 	Genre = "Standard",
 	EnablePassiveMonitoring = true,
