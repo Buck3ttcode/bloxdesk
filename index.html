@@ -183,7 +183,7 @@
         <div class="admonition note">
           <div class="admonition-title">License & Tier Requirement</div>
           <p>
-            In-game telemetry receipts require an active <strong>PRO</strong> or <strong>PRO+</strong> subscription.
+            In-game telemetry receipts require an active <strong>PRO</strong>, <strong>PRO+</strong>, or <strong>Enterprise</strong> subscription.
             The SDK automatically verifies your game's Universe ID on startup. If dropped into an unlinked game or a server on the <strong>Core</strong> plan, the SDK automatically disables itself at runtime and drops ingestion to prevent unauthorized telemetry or database pollution.
           </p>
         </div>
@@ -351,7 +351,7 @@ BloxDesk.ReportIncident(player, "CombatMismatch", {
             <tr>
               <td><code>/license</code></td>
               <td><code>key: string</code></td>
-              <td>Activates a commercial subscription tier (Pro or Pro+).</td>
+              <td>Activates a commercial subscription tier (Pro, Pro+, or Enterprise).</td>
             </tr>
           </tbody>
         </table>
@@ -537,6 +537,22 @@ BloxDesk.ReportIncident(player, "CombatMismatch", {
               <li>Target: 2,000+ CCU</li>
             </ul>
             <button class="btn-plan" onclick="copyDiscordHandle(this)">Contact @bucketcode</button>
+          </div>
+
+          <!-- Enterprise -->
+          <div class="doc-plan-card">
+            <div class="doc-plan-name">Enterprise</div>
+            <div class="doc-plan-price">Custom <span>/ quote</span></div>
+            <p style="font-size: 13px; color: var(--c-text-muted); margin-bottom: 14px;">High-concurrency studios, multi-place universes, and front-page games.</p>
+            <ul style="padding-left: 16px; font-size: 13px; margin-bottom: 18px;">
+              <li>Everything in PRO+</li>
+              <li>Multi-game studio portfolio licensing</li>
+              <li>Custom physics & anticheat heuristics tailored to your mechanics</li>
+              <li>Dedicated isolated SQLite / Postgres sharding</li>
+              <li>Priority 24/7 Discord engineering support</li>
+              <li>Target: 5,000+ to 100,000+ CCU</li>
+            </ul>
+            <button class="btn-plan primary" onclick="copyDiscordHandle(this)">Contact @bucketcode</button>
           </div>
         </div>
 
