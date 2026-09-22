@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BloxDesk Documentation</title>
+  <meta name="description" content="Documentation for BloxDesk: Enterprise Roblox anti-cheat telemetry logging, automated appeal triage, and Open Cloud ban management.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" href="BloxDeskICON.png">
+</head>
+<body>
+
+  <!-- Top Header Navigation -->
+  <header class="doc-header">
+    <div class="header-left">
+      <a href="#" class="header-brand">
+        <img src="BloxDeskICON.png" alt="BloxDesk Icon" class="brand-icon-img">
+        <div class="brand-title">Blox<span>Desk</span></div>
+        <span class="version-tag">v1.0.0</span>
+      </a>
+      <div class="header-search">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="doc-search-input" placeholder="Search documentation..." autocomplete="off">
+      </div>
+    </div>
+    
+    <div class="header-right">
+      <a href="#introduction" class="header-link">Docs</a>
+      <a href="#commands" class="header-link">Commands</a>
+      <a href="#benchmarks" class="header-link">Benchmarks</a>
+      <a href="#pricing" class="header-link">Pricing</a>
+      <a href="BloxDesk.rbxmx" download="BloxDesk.rbxmx" class="btn-header-download">
+        Download SDK
+      </a>
+    </div>
+  </header>
+
+  <!-- 3-Column Layout: Left Sidebar + Center Content + Right TOC -->
+  <div class="doc-layout">
+
+    <!-- Left Sidebar Navigation -->
+    <aside class="doc-sidebar">
+      <div class="sidebar-category">
+        <div class="sidebar-category-title">Getting Started</div>
+        <ul class="sidebar-list">
+          <li><a href="#introduction" class="sidebar-link active">Introduction</a></li>
+          <li><a href="#architecture" class="sidebar-link">Architecture</a></li>
+          <li><a href="#credits" class="sidebar-link">Creator Attribution</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-category">
+        <div class="sidebar-category-title">In-Roblox SDK Setup</div>
+        <ul class="sidebar-list">
+          <li><a href="#download-sdk" class="sidebar-link">Download The SDK</a></li>
+          <li><a href="#studio-installation" class="sidebar-link">Installation Guide</a></li>
+          <li><a href="#sdk-initialization" class="sidebar-link">Initialization Script</a></li>
+          <li><a href="#luau-api" class="sidebar-link">Luau API Reference</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-category">
+        <div class="sidebar-category-title">Discord Bot Setup</div>
+        <ul class="sidebar-list">
+          <li><a href="#setup-overview" class="sidebar-link">Setup Wizard (/setup)</a></li>
+          <li><a href="#setup-phase1" class="sidebar-link">Phase 1: Channel Provisioning</a></li>
+          <li><a href="#setup-phase2" class="sidebar-link">Phase 2: Universe ID Linking</a></li>
+          <li><a href="#setup-phase3" class="sidebar-link">Phase 3: Open Cloud Key</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-category">
+        <div class="sidebar-category-title">Moderation & AI</div>
+        <ul class="sidebar-list">
+          <li><a href="#staff-commands" class="sidebar-link">Staff Slash Commands</a></li>
+          <li><a href="#ai-verdicts" class="sidebar-link">Triage Verdicts & Confidence</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-category">
+        <div class="sidebar-category-title">Performance & Plans</div>
+        <ul class="sidebar-list">
+          <li><a href="#benchmarks" class="sidebar-link">Performance Benchmarks</a></li>
+          <li><a href="#pricing" class="sidebar-link">Plans & Pricing</a></li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Center Content -->
+    <main class="doc-content">
+      
+      <h1>BloxDesk Documentation</h1>
+      <p class="doc-lead">
+        Roblox anti-cheat incident logging, automated AI appeal triage, and instant cross-server Open Cloud ban management.
+      </p>
+
+      <!-- Creator Attribution -->
+      <div class="admonition tip" id="credits">
+        <div class="admonition-title">Project Credits</div>
+        <p>
+          BloxDesk is architected by 
+          <a href="javascript:void(0)" onclick="copyDiscordHandle(this)" class="doc-link"><strong>@bucketcode</strong></a> on Discord 
+          and <strong>@buckettcode</strong> on Roblox.
+        </p>
+      </div>
+
+      <!-- Introduction -->
+      <section id="introduction">
+        <h2>Introduction</h2>
+        <p>
+          BloxDesk links Roblox game servers, Discord moderation staff, and Google Gemini AI into a synchronized security mesh. 
+          When suspicious physics activity occurs inside a running game session, server-side velocity, network ping, and assembly states are recorded without impacting server framerate.
+        </p>
+        <p>
+          When a banned player submits an appeal in your server's <code>#appeal_channel</code>, the triage engine evaluates their written statement directly against the recorded physics evidence and provides staff with a clear verdict:
+        </p>
+        <ul>
+          <li><strong>Confirmed Violation:</strong> The telemetry mathematically disproves the player's claim (e.g. sustained 142 studs/s horizontal movement with 0% packet loss).</li>
+          <li><strong>Innocent Glitch / False Ban:</strong> The telemetry confirms high-impulse explosion flings, vehicle glitches, or sudden server desync.</li>
+          <li><strong>Manual Staff Review:</strong> Edge cases where telemetry is absent or ambiguous, presented to staff with 1-click Approve and Deny buttons.</li>
+        </ul>
+      </section>
+
+      <!-- Architecture -->
+      <section id="architecture">
+        <h2>Architecture</h2>
+        <table class="doc-table">
+          <thead>
+            <tr>
+              <th>Layer</th>
+              <th>Technology</th>
+              <th>Function</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>In-Game SDK</td>
+              <td>Luau ModuleScript</td>
+              <td>Passive 4Hz physics monitoring, teleport whitelisting, and incident dispatching.</td>
+            </tr>
+            <tr>
+              <td>Ban Enforcement</td>
+              <td>Roblox Open Cloud V2</td>
+              <td>Sub-400ms cross-server restrictions and alt-account detection across all instances.</td>
+            </tr>
+            <tr>
+              <td>Appeal Triage</td>
+              <td>Google Gemini 3.6 Flash</td>
+              <td>Cross-references player defense arguments against server telemetry and cross-game history.</td>
+            </tr>
+            <tr>
+              <td>Staff Operations</td>
+              <td>Discord.js v14</td>
+              <td>Zero-duplicate slash command suite, interactive review cards, and real-time audit logging.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Download SDK -->
+      <section id="download-sdk">
+        <h2>Download The SDK</h2>
+        <p>
+          To connect your Roblox experience to BloxDesk, download 
+          <a href="BloxDesk.rbxmx" download="BloxDesk.rbxmx" class="download-link"><span class="download-icon">📥</span> THE SDK (.rbxmx)</a> 
+          as a Roblox Studio model, or download the standalone Luau module via 
+          <a href="BloxDesk.luau" download="BloxDesk.luau" class="download-link"><span class="download-icon">📄</span> BloxDesk.luau</a>.
+        </p>
+
+        <div style="margin: 16px 0; display: flex; gap: 10px; flex-wrap: wrap;">
+          <a href="BloxDesk.rbxmx" download="BloxDesk.rbxmx" class="download-pill">
+            <span>📦</span> BloxDesk Model (.rbxmx)
+          </a>
+          <a href="BloxDesk.luau" download="BloxDesk.luau" class="download-pill">
+            <span>📄</span> BloxDesk Source (.luau)
+          </a>
+        </div>
+
+        <div class="admonition note">
+          <div class="admonition-title">License & Tier Requirement</div>
+          <p>
+            In-game telemetry receipts require an active <strong>PRO</strong> or <strong>PRO+</strong> subscription.
+            The SDK automatically verifies your game's Universe ID on startup. If dropped into an unlinked game or a server on the <strong>Core</strong> plan, the SDK automatically disables itself at runtime and drops ingestion to prevent unauthorized telemetry or database pollution.
+          </p>
+        </div>
+      </section>
+
+      <!-- Studio Installation -->
+      <section id="studio-installation">
+        <h2>In-Roblox SDK Installation Guide</h2>
+        <p>Follow these steps to set up BloxDesk inside Roblox Studio:</p>
+        <ol>
+          <li>Open your place in <strong>Roblox Studio</strong>.</li>
+          <li>
+            In the Explorer window, navigate to <strong>ServerScriptService</strong>.
+          </li>
+          <li>
+            Drag and drop <code>BloxDesk.rbxmx</code> directly into <strong>ServerScriptService</strong>.
+            The Explorer hierarchy will display:
+            <br>
+            <code>ServerScriptService → BloxDesk (ModuleScript)</code>
+          </li>
+          <li>
+            Enable HTTP Requests: Go to <strong>Home → Game Settings → Security</strong> and toggle <strong>Allow HTTP Requests</strong> to <strong>ON</strong>. Save changes.
+          </li>
+        </ol>
+
+        <div class="admonition warning">
+          <div class="admonition-title">HTTP Requests Required</div>
+          <p>
+            BloxDesk requires <code>HttpService.HttpEnabled = true</code> to transmit incident telemetry and verify server configurations.
+          </p>
+        </div>
+      </section>
+
+      <!-- SDK Initialization -->
+      <section id="sdk-initialization">
+        <h2>Initialization Script</h2>
+        <p>
+          Create a regular <strong>Script</strong> inside <strong>ServerScriptService</strong> named <code>BloxDeskInit</code>:
+        </p>
+
+        <div class="code-container">
+          <div class="code-header">
+            <span>ServerScriptService/BloxDeskInit.server.luau</span>
+            <button class="btn-copy" onclick="copySnippet(this, 'code-init')">Copy</button>
+          </div>
+          <pre id="code-init"><code>local ServerScriptService = game:GetService("ServerScriptService")
+local BloxDesk = require(ServerScriptService:WaitForChild("BloxDesk"))
+
+-- Zero configuration required!
+-- Automatically connects to the BloxDesk network using your game's Universe ID.
+BloxDesk.Init()
+
+print("[BloxDesk] Watcher running and monitoring players.")</code></pre>
+        </div>
+
+        <p>
+          For custom experiences (like Flying games or Speed Simulators), you can optionally pass a genre preset:
+        </p>
+
+        <div class="code-container">
+          <div class="code-header">
+            <span>Optional Genre Preset</span>
+            <button class="btn-copy" onclick="copySnippet(this, 'code-genre')">Copy</button>
+          </div>
+          <pre id="code-genre"><code>BloxDesk.Init({
+    Genre = "SpeedSimulator" -- Options: "Standard" | "SpeedSimulator" | "Flying" | "Racing"
+})</code></pre>
+        </div>
+      </section>
+
+      <!-- Luau API Reference -->
+      <section id="luau-api">
+        <h2>Luau API Reference</h2>
+        <p>
+          The <code>BloxDesk</code> module exposes dedicated functions to handle gameplay exceptions, portal teleports, and custom anticheat hooks:
+        </p>
+
+        <div class="code-container">
+          <div class="code-header">
+            <span>Luau API Methods</span>
+            <button class="btn-copy" onclick="copySnippet(this, 'code-api')">Copy</button>
+          </div>
+          <pre id="code-api"><code>-- Whitelist player capabilities (e.g. VIP flight gear, super-speed potions)
+BloxDesk.SetPlayerCapability(player, {
+    CanFly = true,
+    InfiniteSpeed = false,
+    CanTeleport = true,
+    CustomSpeedMultiplier = 2.5
+})
+
+-- Whitelist a legitimate game teleport (portals, cutscenes, elevators)
+-- Grants a grace window in seconds so teleportation does not trigger a false flag
+BloxDesk.WhitelistTeleport(player, 5.0)
+
+-- Monitor a RemoteEvent against script injector spam
+BloxDesk.MonitorRemote(ReplicatedStorage.Remotes.AttackEvent, 25)
+
+-- Manually log a staff ban to Discord with real-time physics snapshot
+BloxDesk.LogBan(player, "StaffModerator", "Fly exploit detected during raid")
+
+-- Report a custom incident flag
+BloxDesk.ReportIncident(player, "CombatMismatch", {
+    DamageDealt = 9999,
+    MaxAllowed = 150
+})</code></pre>
+        </div>
+      </section>
+
+      <!-- Discord Bot Setup -->
+      <section id="setup-overview">
+        <h2>Discord Bot Setup Wizard</h2>
+        <p>
+          Running <code>/setup</code> in your Discord server initiates the 3-phase configuration process.
+        </p>
+
+        <h3 id="setup-phase1">Phase 1: Channel Provisioning</h3>
+        <p>
+          BloxDesk automatically builds a clean Discord category containing:
+        </p>
+        <ul>
+          <li><code>#appeal_channel</code>: Public player appeal submission channel with guided modal prompt.</li>
+          <li><code>#moderation</code>: Private staff review queue showing evidence embeds and action buttons.</li>
+          <li><code>#bloxdesk_mod</code>: Audit log recording all bans, unbans, and staff activity.</li>
+        </ul>
+
+        <h3 id="setup-phase2">Phase 2: Universe ID Linking</h3>
+        <p>
+          Enter your Roblox Universe ID (Experience ID). BloxDesk queries Roblox APIs, verifies the experience exists, and retrieves its official game name for confirmation.
+        </p>
+
+        <h3 id="setup-phase3">Phase 3: Roblox Open Cloud API Key</h3>
+        <p>
+          Generate an API key in the Roblox Creator Hub with <strong>User Restrictions</strong> (Read & Write) permissions. 
+          BloxDesk performs a live permission check, encrypts the credentials using AES-256-GCM, and displays the setup completion confirmation.
+        </p>
+      </section>
+
+      <!-- Staff Commands -->
+      <section id="staff-commands">
+        <h2>Staff Slash Commands</h2>
+        <table class="doc-table">
+          <thead>
+            <tr>
+              <th>Command</th>
+              <th>Parameters</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>/setup</code></td>
+              <td><em>None</em></td>
+              <td>Launches the 3-phase interactive onboarding wizard.</td>
+            </tr>
+            <tr>
+              <td><code>/lookup</code></td>
+              <td><code>user: string</code></td>
+              <td>Displays a player's rap sheet, previous appeals, active Open Cloud bans, and alts.</td>
+            </tr>
+            <tr>
+              <td><code>/history</code></td>
+              <td><code>user: string</code></td>
+              <td>Retrieves incident records with physics velocity vectors and ping history.</td>
+            </tr>
+            <tr>
+              <td><code>/license</code></td>
+              <td><code>key: string</code></td>
+              <td>Activates a commercial subscription tier (Pro or Pro+).</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Triage Verdicts -->
+      <section id="ai-verdicts">
+        <h2>Triage Verdicts & Confidence</h2>
+        <p>
+          Rather than obscure technical jargon, BloxDesk produces clear, actionable verdicts in moderator channels:
+        </p>
+
+        <table class="doc-table">
+          <thead>
+            <tr>
+              <th>Verdict</th>
+              <th>Meaning</th>
+              <th>Recommended Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Confirmed Violation</strong></td>
+              <td>Telemetry mathematically proves active exploiting, prompt injection, or cheat recidivism.</td>
+              <td><code>Deny Appeal & Maintain Ban</code></td>
+            </tr>
+            <tr>
+              <td><strong>Innocent Glitch / False Ban</strong></td>
+              <td>Evidence confirms vehicle fling, physics collision impulse, or server-side lag spike.</td>
+              <td><code>Approve Appeal & Lift Ban</code></td>
+            </tr>
+            <tr>
+              <td><strong>Manual Staff Review</strong></td>
+              <td>Ambiguous claim or unmonitored incident requiring human moderator judgment.</td>
+              <td><code>Staff Review Required</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Performance Benchmarks -->
+      <section id="benchmarks">
+        <h2>Performance Benchmarks</h2>
+        <p>
+          Measured on production-grade infrastructure with 10,000 incident telemetry records, 3,000 cross-game bans, and 1,500 appeals:
+        </p>
+
+        <table class="doc-table">
+          <thead>
+            <tr>
+              <th>Benchmark Metric</th>
+              <th>Measured Result</th>
+              <th>Target Threshold</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Database Ingestion Throughput</td>
+              <td><strong>167,284 ops/sec</strong></td>
+              <td>&gt; 5,000 ops/sec</td>
+              <td>Passed</td>
+            </tr>
+            <tr>
+              <td>Telemetry Query Latency (P50)</td>
+              <td><strong>0.316 ms</strong></td>
+              <td>&lt; 5.0 ms</td>
+              <td>Passed</td>
+            </tr>
+            <tr>
+              <td>Telemetry Query Latency (P99)</td>
+              <td><strong>0.577 ms</strong></td>
+              <td>&lt; 25.0 ms</td>
+              <td>Passed</td>
+            </tr>
+            <tr>
+              <td>Global Threat Profile Aggregation</td>
+              <td><strong>0.261 ms</strong></td>
+              <td>&lt; 10.0 ms</td>
+              <td>Passed</td>
+            </tr>
+            <tr>
+              <td>SSRF Attack Vector Neutralization</td>
+              <td><strong>15 / 15 (100%)</strong></td>
+              <td>100%</td>
+              <td>Passed</td>
+            </tr>
+            <tr>
+              <td>SQL Injection Neutralization</td>
+              <td><strong>6 / 6 (100%)</strong></td>
+              <td>100%</td>
+              <td>Passed</td>
+            </tr>
+            <tr>
+              <td>AutoMod Circuit Breaker Enforcement</td>
+              <td><strong>5-ban hard cap / 10 min</strong></td>
+              <td>Cascading fuse protection</td>
+              <td>Passed</td>
+            </tr>
+            <tr>
+              <td>In-Game Studio Telemetry Overhead</td>
+              <td><strong>&lt; 0.05% CPU</strong></td>
+              <td>4Hz Heartbeat loop, 0 FPS drop</td>
+              <td>Passed</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Plans & Pricing -->
+      <section id="pricing">
+        <h2>Plans & Pricing</h2>
+        <p>
+          Subscriptions are billed monthly in Robux (R$). Choose the tier that matches your studio scale:
+        </p>
+
+        <div class="doc-pricing-grid">
+          <!-- Core -->
+          <div class="doc-plan-card">
+            <div class="doc-plan-name">Core</div>
+            <div class="doc-plan-price">5,000 R$ <span>/ month</span></div>
+            <p style="font-size: 13px; color: var(--c-text-muted); margin-bottom: 14px;">Essential Open Cloud ban sync and AI appeal triage.</p>
+            <ul style="padding-left: 16px; font-size: 13px; margin-bottom: 18px;">
+              <li>Zero in-game code required</li>
+              <li>Full Open Cloud sync (/ban, /unban, /lookup)</li>
+              <li>Interactive /appeal-panel modal</li>
+              <li>Gemini 3.6 Flash text appeal triage</li>
+              <li>Target: 150 – 500 CCU</li>
+            </ul>
+            <button class="btn-plan" onclick="copyDiscordHandle(this)">Contact @bucketcode</button>
+          </div>
+
+          <!-- PRO -->
+          <div class="doc-plan-card highlight">
+            <div class="doc-plan-name">PRO</div>
+            <div class="doc-plan-price">15,000 R$ <span>/ month</span></div>
+            <p style="font-size: 13px; color: var(--c-text-muted); margin-bottom: 14px;">Drop-in Luau SDK with server-side telemetry receipts.</p>
+            <ul style="padding-left: 16px; font-size: 13px; margin-bottom: 18px;">
+              <li>Everything in Core</li>
+              <li>Drop-in BloxDesk.luau SDK</li>
+              <li>Physics velocity receipts & real-time ping</li>
+              <li>Vehicle/Seat immunity & portal grace</li>
+              <li>Target: 500 – 2,000 CCU</li>
+            </ul>
+            <button class="btn-plan primary" onclick="copyDiscordHandle(this)">Contact @bucketcode</button>
+          </div>
+
+          <!-- PRO+ -->
+          <div class="doc-plan-card">
+            <div class="doc-plan-name">PRO+</div>
+            <div class="doc-plan-price">25,000 R$ <span>/ month</span></div>
+            <p style="font-size: 13px; color: var(--c-text-muted); margin-bottom: 14px;">Autonomous AutoMod engine and multimodal vision check.</p>
+            <ul style="padding-left: 16px; font-size: 13px; margin-bottom: 18px;">
+              <li>Everything in PRO</li>
+              <li>Multimodal Vision (screenshot glitch check)</li>
+              <li>Remote Event injection spam detection</li>
+              <li>AutoMod engine with circuit breaker</li>
+              <li>Target: 2,000+ CCU</li>
+            </ul>
+            <button class="btn-plan" onclick="copyDiscordHandle(this)">Contact @bucketcode</button>
+          </div>
+        </div>
+
+        <div class="admonition note">
+          <div class="admonition-title">Free Trials</div>
+          <p>
+            Free trials are available on request. Message <strong>@bucketcode</strong> on Discord with your Roblox experience link to request an evaluation trial.
+          </p>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="doc-footer">
+        <div>
+          BloxDesk • Built by <strong>@bucketcode</strong> on Discord & <strong>@buckettcode</strong> on Roblox
+        </div>
+        <div>
+          v1.0.0
+        </div>
+      </footer>
+
+    </main>
+
+    <!-- Right Table of Contents -->
+    <aside class="doc-toc">
+      <div class="toc-title">On this page</div>
+      <ul class="toc-list">
+        <li class="toc-item"><a href="#introduction" class="toc-link active">Introduction</a></li>
+        <li class="toc-item"><a href="#architecture" class="toc-link">Architecture</a></li>
+        <li class="toc-item"><a href="#download-sdk" class="toc-link">Download The SDK</a></li>
+        <li class="toc-item"><a href="#studio-installation" class="toc-link">SDK Installation</a></li>
+        <li class="toc-item"><a href="#sdk-initialization" class="toc-link">Initialization Script</a></li>
+        <li class="toc-item"><a href="#luau-api" class="toc-link">Luau API Reference</a></li>
+        <li class="toc-item"><a href="#setup-overview" class="toc-link">Setup Wizard (/setup)</a></li>
+        <li class="toc-item"><a href="#staff-commands" class="toc-link">Staff Commands</a></li>
+        <li class="toc-item"><a href="#ai-verdicts" class="toc-link">Triage Verdicts</a></li>
+        <li class="toc-item"><a href="#benchmarks" class="toc-link">Benchmarks</a></li>
+        <li class="toc-item"><a href="#pricing" class="toc-link">Plans & Pricing</a></li>
+      </ul>
+    </aside>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
