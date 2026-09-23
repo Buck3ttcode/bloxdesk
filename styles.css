@@ -744,4 +744,48 @@ pre code {
   .header-search { display: none; }
   .doc-content { padding: 24px 18px; }
   .doc-pricing-grid { grid-template-columns: 1fr; }
+  .safety-grid { grid-template-columns: 1fr !important; }
+}
+
+/* Safety & Reliability Protocol Grid */
+.safety-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin: 24px 0 28px;
+}
+
+.safety-card {
+  background: #242632;
+  border: 1px solid var(--c-border);
+  border-radius: 6px;
+  padding: 22px;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.safety-card:hover {
+  border-color: rgba(1, 181, 252, 0.45);
+  transform: translateY(-2px);
+}
+
+.safety-icon {
+  font-size: 26px;
+  margin-bottom: 12px;
+  line-height: 1;
+}
+
+.safety-card h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 8px 0;
+}
+
+.safety-card p {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--c-text-muted);
+  margin: 0;
 }

@@ -30,7 +30,8 @@
     
     <div class="header-right">
       <a href="#introduction" class="header-link">Docs</a>
-      <a href="#commands" class="header-link">Commands</a>
+      <a href="#client-safety" class="header-link">Safety</a>
+      <a href="#staff-commands" class="header-link">Commands</a>
       <a href="#benchmarks" class="header-link">Benchmarks</a>
       <a href="#pricing" class="header-link">Pricing</a>
       <a href="BloxDesk.rbxmx" download="BloxDesk.rbxmx" class="btn-header-download">
@@ -78,6 +79,13 @@
         <ul class="sidebar-list">
           <li><a href="#staff-commands" class="sidebar-link">Staff Slash Commands</a></li>
           <li><a href="#ai-verdicts" class="sidebar-link">Triage Verdicts & Confidence</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-category">
+        <div class="sidebar-category-title">Safety & Reliability</div>
+        <ul class="sidebar-list">
+          <li><a href="#client-safety" class="sidebar-link">Client & User Safety</a></li>
         </ul>
       </div>
 
@@ -404,6 +412,71 @@ BloxDesk.ReportIncident(player, "CombatMismatch", {
         </div>
       </section>
 
+      <!-- Safety & Reliability -->
+      <section id="client-safety">
+        <h2>🛡️ Client, Server & User Safety Protocol</h2>
+        <p class="doc-lead">
+          Designed specifically for top-tier Roblox developers, studio executives, and high-concurrency games. BloxDesk is engineered with strict non-blocking concurrency, zero-crash fault tolerance, and comprehensive player privacy safeguards.
+        </p>
+
+        <div class="safety-grid">
+          <div class="safety-card">
+            <div class="safety-icon">⚡</div>
+            <h3>Zero FPS Impact & Non-Blocking Design</h3>
+            <p>
+              Telemetry sampling and network operations are dispatched completely asynchronously on isolated background microthreads (<code>task.spawn</code>). The main Roblox game loop (<code>Heartbeat</code> and physics step) is never halted or blocked. Even in full 100-player servers, CPU utilization remains under <strong>0.05%</strong> with 0 dropped frames.
+            </p>
+          </div>
+
+          <div class="safety-card">
+            <div class="safety-icon">🛡️</div>
+            <h3>Silent Fail-Safe Guarantee</h3>
+            <p>
+              Every outbound network request is wrapped inside defensive protected calls (<code>pcall</code>). If Roblox <code>HttpService</code> is disabled in game settings, or if our backend undergoes maintenance, the in-game script catches it completely silently without throwing errors in your developer console or disrupting gameplay.
+            </p>
+          </div>
+
+          <div class="safety-card">
+            <div class="safety-icon">🚫</div>
+            <h3>Zero Autonomous In-Game Kicks</h3>
+            <p>
+              The <code>BloxDesk.luau</code> SDK is strictly a <strong>passive telemetry collector and incident reporter</strong>. It never calls <code>player:Kick()</code> or alters character physics. Your paying, legitimate players will never be kicked in the middle of a boss fight, high-stakes trade, or competitive match due to an edge-case physics anomaly.
+            </p>
+          </div>
+
+          <div class="safety-card">
+            <div class="safety-icon">🔒</div>
+            <h3>Player Privacy & Data Hygiene</h3>
+            <p>
+              BloxDesk does <strong>NOT</strong> collect private chat logs, IP addresses, email addresses, or account credentials. Only strictly necessary physics state vectors (speed, velocity vectors, altitude, ping, and account age) are logged. All telemetry is securely partitioned per Universe ID and encrypted at rest.
+            </p>
+          </div>
+
+          <div class="safety-card">
+            <div class="safety-icon">🎮</div>
+            <h3>Genre-Adaptive False Positive Immunity</h3>
+            <p>
+              Whether your experience features portals, jetpacks, grapple hooks, speed simulators, or admin commands (<code>:tp</code>), BloxDesk provides native hooks like <code>BloxDesk.WhitelistTeleport()</code> and <code>BloxDesk.SetPlayerCapability()</code> to ensure legitimate gameplay mechanics never trigger false telemetry flags.
+            </p>
+          </div>
+
+          <div class="safety-card">
+            <div class="safety-icon">🔐</div>
+            <h3>Anti-Tamper & Ingestion Shielding</h3>
+            <p>
+              Our backend API enforces strict <strong>50KB payload ceilings</strong> and validates incoming requests against your private <code>x-bloxdesk-secret</code> and registered Universe ID. Malicious clients and exploit scripts cannot inject fabricated incident payloads or overload the reporting infrastructure.
+            </p>
+          </div>
+        </div>
+
+        <div class="admonition tip" style="margin-top: 24px;">
+          <div class="admonition-title">Developer Peace of Mind Guarantee</div>
+          <p>
+            You can verify our in-game script yourself: <code>BloxDesk.luau</code> is 100% open-source and human-readable, containing zero obfuscated bytecode or external <code>loadstring</code> calls. You retain complete ownership of your game's security and player experience.
+          </p>
+        </div>
+      </section>
+
       <!-- Performance Benchmarks -->
       <section id="benchmarks">
         <h2>Performance Benchmarks</h2>
@@ -589,6 +662,7 @@ BloxDesk.ReportIncident(player, "CombatMismatch", {
         <li class="toc-item"><a href="#setup-overview" class="toc-link">Setup Wizard (/setup)</a></li>
         <li class="toc-item"><a href="#staff-commands" class="toc-link">Staff Commands</a></li>
         <li class="toc-item"><a href="#ai-verdicts" class="toc-link">Triage Verdicts</a></li>
+        <li class="toc-item"><a href="#client-safety" class="toc-link">Client & User Safety</a></li>
         <li class="toc-item"><a href="#benchmarks" class="toc-link">Benchmarks</a></li>
         <li class="toc-item"><a href="#pricing" class="toc-link">Plans & Pricing</a></li>
       </ul>
